@@ -1,7 +1,11 @@
+import { useState } from "react"
 import Header from "./components/Header"
 import Guitar from "./components/guitar"
 
 function App() {
+
+    // state
+    const [] = useState()
 
   return (
     <>
