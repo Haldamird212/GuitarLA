@@ -7,12 +7,24 @@ function App() {
 
     // state
     const [data, setData] = useState([])
+    const [cart, setCart] = useState([])
 
     // recomendado para API's
     useEffect(() => {
         setData(db)
     },[])
-
+    
+    function addToCart(item){
+        const itemExist = cart.findIndex(guitar => guitar.id === item.id)
+        if (itemExist >= 0){
+            const updatedCart = [...cart]
+            updatedCart[itemExist].quantity++
+            setCart(updatedCart)
+        }else{
+            item.quantity = 1
+            setCart(prevCart => [...prevCart, item])
+        }
+    }
 
   return (
     <>
@@ -26,6 +38,7 @@ function App() {
                 <Guitar
                 key={guitar.id}
                 guitar = {guitar}
+                setCart = {addToCart}
                 />
             ))}
             
