@@ -1,11 +1,18 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Header from "./components/Header"
 import Guitar from "./components/guitar"
+import { db } from "./data/db"
 
 function App() {
 
     // state
-    const [] = useState()
+    const [data, setData] = useState([])
+
+    // recomendado para API's
+    useEffect(() => {
+        setData(db)
+    },[])
+
 
   return (
     <>
@@ -15,8 +22,11 @@ function App() {
         <h2 className="text-center">Nuestra Colección</h2>
 
         <div className="row mt-5">
+            {data.map(()=>(
+                <Guitar
+                />
+            ))}
             
-            <Guitar/>
 
         </div>
     </main>
