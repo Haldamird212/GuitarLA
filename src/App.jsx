@@ -26,10 +26,36 @@ function App() {
         }
     }
 
+    function removeFromCart(id){
+        setCart(prevCart => prevCart.filter(guitar => guitar.id !== id))
+    }
+
+    function increaseQuantity(id){
+        const item = cart.findIndex(guitar => guitar.id === id)
+        const updatedQuantity = [...cart]
+        updatedQuantity[item].quantity++
+        setCart(updatedQuantity)
+    }
+    function decreaseQuantity(id){
+        const item = cart.findIndex(guitar => guitar.id = id)
+        const updatedquantity = [...cart]
+        console.log(updatedquantity[item].quantity);
+        if(updatedquantity[item].quantity > 1){
+            updatedquantity[item].quantity--;
+        }else{
+            setCart((prevCart) =>
+              prevCart.filter((guitar) => guitar.id !== item));
+        }
+        setCart(updatedquantity)
+    }
+
   return (
     <>
     <Header
         cart = {cart}
+        removeFromCart = {removeFromCart}
+        increaseQuantity = {increaseQuantity}
+        decreaseQuantity={decreaseQuantity}
     />
 
     <main className="container-xl mt-5">
