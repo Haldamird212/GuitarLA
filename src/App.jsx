@@ -5,9 +5,17 @@ import { db } from "./data/db"
 
 function App() {
 
+    const initialCart = ()=>{
+        const localStorageCart = localStorage.getItem('cart')
+        return localStorageCart ? JSON.parse(localStorageCart):[]
+    }
+
     // state
     const [data, setData] = useState([])
-    const [cart, setCart] = useState([])
+    const [cart, setCart] = useState(initialCart)
+    useEffect(()=>{
+        localStorage.setItem('cart',JSON.stringify(cart))
+    }, [cart])
 
     // recomendado para API's
     useEffect(() => {
@@ -24,6 +32,7 @@ function App() {
             item.quantity = 1
             setCart(prevCart => [...prevCart, item])
         }
+        
     }
 
     function removeFromCart(id){
@@ -31,22 +40,31 @@ function App() {
     }
 
     function increaseQuantity(id){
-        const item = cart.findIndex(guitar => guitar.id === id)
-        const updatedQuantity = [...cart]
-        updatedQuantity[item].quantity++
-        setCart(updatedQuantity)
+        const updatedCart = cart.map(item=> {
+            if(item.id === id){
+                return{
+                    ...item,
+                    quantity: item.quantity +1
+                }
+            }
+            return item
+        })
+        setCart(updatedCart)
     }
     function decreaseQuantity(id){
-        const item = cart.findIndex(guitar => guitar.id = id)
-        const updatedquantity = [...cart]
-        console.log(updatedquantity[item].quantity);
-        if(updatedquantity[item].quantity > 1){
-            updatedquantity[item].quantity--;
-        }else{
-            setCart((prevCart) =>
-              prevCart.filter((guitar) => guitar.id !== item));
-        }
-        setCart(updatedquantity)
+        const updatedCart = cart.map(item =>{
+            if (item.id === id && item.quantity > 1){
+                return{
+                    ...item,
+                    quantity: item.quantity - 1
+                }
+            }
+            return item
+        })
+        setCart(updatedCart)
+    }
+    function clearCart(){
+        return setCart([])
     }
 
   return (
@@ -56,6 +74,7 @@ function App() {
         removeFromCart = {removeFromCart}
         increaseQuantity = {increaseQuantity}
         decreaseQuantity={decreaseQuantity}
+        clearCart={clearCart}
     />
 
     <main className="container-xl mt-5">
